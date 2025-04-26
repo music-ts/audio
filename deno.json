@@ -1,0 +1,12 @@
+{
+  "name": "@music/audio",
+  "version": "0.1.0",
+  "license": "MIT",
+  "exports": {
+    ".": "./mod.ts",
+    "./api": "./audioApi/mod.ts",
+    "./files": "./files/mod.ts",
+    "./generators": "./generators/mod.ts",
+    "./fourier": "./fft.ts"
+  }
+}
