@@ -6,7 +6,7 @@ import { AudioDevice } from "./device.ts";
 /**
  * Yields all available {@link AudioHostApi}s.
  */
-export function* getHostApis() {
+export function* getHostApis(): Generator<AudioHostApi> {
   const hostApiCount = pa.symbols.Pa_GetHostApiCount();
   for (let i = 0; i < hostApiCount; i++) {
     yield new AudioHostApi(i);
@@ -16,7 +16,7 @@ export function* getHostApis() {
 /**
  * Returns the default {@link AudioHostApi}.
  */
-export function defaultHostApi() {
+export function defaultHostApi(): AudioHostApi {
   return new AudioHostApi(pa.symbols.Pa_GetDefaultHostApi());
 }
 
@@ -43,17 +43,17 @@ export class AudioHostApi {
   /**
    * The well known unique identifier of this host API
    */
-  get hostType() { return this._pw.getInt32(4); }
+  get hostType(): number { return this._pw.getInt32(4); }
 
   /**
    * A textual description of the host API for display on user interfaces. Encoded as UTF-8.
    */
-  get name() { return unsafeString(this._pw.getBigInt64(8)); }
+  get name(): string { return unsafeString(this._pw.getBigInt64(8)); }
 
   /**
    * Yields all {@link AudioDevice}s belonging to this host API.
    */
-  *devices() { 
+  *devices(): Generator<AudioDevice> { 
     const numDevices = this._pw.getInt32(16);
     for (let i = 0; i < numDevices; i++) {
       const id = pa.symbols.Pa_HostApiDeviceIndexToDeviceIndex(this.id, i);
@@ -64,7 +64,7 @@ export class AudioHostApi {
   /**
    * Returns the default input {@link AudioDevice} for this host API.
    */
-  get defaultInputDevice() { 
+  get defaultInputDevice(): AudioDevice { 
     const id = this._pw.getInt32(20); 
     return new AudioDevice(id);
   }
@@ -72,7 +72,7 @@ export class AudioHostApi {
   /**
    * Returns the default output {@link AudioDevice} for this host API.
    */
-  get defaultOutputDevice() { 
+  get defaultOutputDevice(): AudioDevice { 
     const id = this._pw.getInt32(24); 
     return new AudioDevice(id);
   }

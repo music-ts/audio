@@ -9,12 +9,12 @@ import {
   type AudioBuffer,
   type AudioSampleFormat,
 } from "../../sampleFormats.ts";
+import { delay } from "../../utils.ts";
 import pa from "../ffi/mod.ts";
 import { PortAudioError } from "../err.ts";
 import { defaultInputDevice } from "../hardware/mod.ts";
 import type { StreamOptions } from "./types.ts";
 import { AudioStream } from "./abstract.ts";
-import { delay } from "jsr:@std/async";
 
 /**
  * Opens an input audio stream for recording from the specified device.
@@ -76,7 +76,7 @@ export class AudioInputStream<TFormat extends AudioSampleFormat>
     }
   }
 
-  async *[Symbol.asyncIterator]() {
+  async *[Symbol.asyncIterator](): AsyncGenerator<AudioBuffer<TFormat>, void, unknown> {
     while (!this.isStopped) {
       yield await this.read();
     }
