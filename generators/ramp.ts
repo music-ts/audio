@@ -2,14 +2,14 @@ import { lerp } from "../utils.ts";
 
 /**
  * Generates a linear ramp between start and end values.
- * 
+ *
  * @param start - The starting value.
  * @param end - The ending value.
  * @param samples - The number of samples to generate.
  * @param curveFn - A function to apply a curve to the ramp.
  * @returns A generator that yields the ramp values.
  */
-export function * ramp(
+export function* ramp(
   start: number,
   end: number,
   samples: number,

@@ -22,7 +22,7 @@ export function createWavFile<TFormat extends AudioSampleFormat>(
     channels,
     sampleFormat,
     sampleRate,
-  }: AudioOptions<TFormat>,
+  }: Pick<AudioOptions<TFormat>, "channels" | "sampleFormat" | "sampleRate">,
 ): Uint8Array<ArrayBuffer> {
   const formatter = AUDIO_SAMPLE_FORMATS[sampleFormat];
   const frameByteSize = formatter.Array.BYTES_PER_ELEMENT;
@@ -88,9 +88,17 @@ export function createWavFile<TFormat extends AudioSampleFormat>(
   return new Uint8Array(fileBuffer);
 }
 
+/**
+ * Reads a WAV file and returns its options and samples.
+ * @param data - The WAV file data.
+ * @returns An object containing the options and samples.
+ */
 export function readWavFile(
   data: Uint8Array<ArrayBuffer>,
-): { options: AudioOptions; samples: AudioBuffer } {
+): {
+  options: Pick<AudioOptions, "channels" | "sampleFormat" | "sampleRate">;
+  samples: AudioBuffer;
+} {
   const view = new DataView(data.buffer);
 
   const isRIFF = view.getInt32(0) === 0x52494646;

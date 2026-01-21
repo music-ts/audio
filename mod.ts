@@ -1,7 +1,7 @@
 /**
- * @module
- *
  * Main entry point for the audio processing library.
+ *
+ * @module
  */
 export * from "./audioApi/mod.ts";
 export * from "./files/mod.ts";

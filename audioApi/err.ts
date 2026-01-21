@@ -1,4 +1,4 @@
-import pa from "./ffi/mod.ts";
+import type { AudioApi } from "./mod.ts";
 
 /**
  * Base error class for audio errors.
@@ -21,9 +21,9 @@ export class AudioError extends Error {
  * Error class for PortAudio API errors.
  */
 export class PortAudioError extends AudioError {
-  constructor(code: number) {
+  constructor(api: AudioApi, code: number) {
     const msg = new Deno.UnsafePointerView(
-      AudioError.parseNotNull(pa.symbols.Pa_GetErrorText(code)),
+      AudioError.parseNotNull(api._lib.symbols.Pa_GetErrorText(code)),
     ).getCString();
     super(msg);
     this.name = "PortAudio API Error";
@@ -34,9 +34,9 @@ export class PortAudioError extends AudioError {
    * @param code The PortAudio error code.
    * @returns The code if it is non-negative.
    */
-  static parseCode(code: number): number {
+  static parseCode(api: AudioApi, code: number): number {
     if (code < 0) {
-      throw new PortAudioError(code);
+      throw new PortAudioError(api, code);
     }
     return code;
   }

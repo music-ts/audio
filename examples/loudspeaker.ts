@@ -1,9 +1,7 @@
-import { initialize, play, record, terminate } from "../mod.ts";
+import { initAudioApi } from "../mod.ts";
 
-initialize();
+using audio = await initAudioApi();
 
-const mic = record().stopAfter({ seconds: 5 });
+const mic = audio.record().stopAfter({ seconds: 5 });
 
-await play().from(mic);
-
-terminate();
+await audio.play().from(mic);

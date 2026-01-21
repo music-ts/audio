@@ -1,3 +1,5 @@
-import { audioApiVersion } from "../mod.ts";
+import { initAudioApi } from "../mod.ts";
 
-console.log(audioApiVersion());
+using audio = await initAudioApi();
+
+console.log(audio.version());

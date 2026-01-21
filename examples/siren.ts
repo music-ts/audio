@@ -1,11 +1,19 @@
-import { chunker, initialize, loop, play, queue, ramp, repeat, sine, terminate } from "../mod.ts";
+import {
+  chunker,
+  initAudioApi,
+  loop,
+  queue,
+  ramp,
+  repeat,
+  sine,
+} from "../mod.ts";
 
 const Eb5 = 622.26;
 const A5 = 880;
 
-initialize();
+using audio = await initAudioApi();
 
-const stream = play().stopAfter({ seconds: 10 });
+const stream = audio.play().stopAfter({ seconds: 10 });
 
 const sec = stream.sampleRate;
 
@@ -14,10 +22,10 @@ function fadeInOut(t: number): number {
 }
 
 const sirenFrequency = loop(queue(
-  repeat(Eb5, sec/4),
-  ramp(Eb5, A5, sec/4, fadeInOut),
-  repeat(A5, sec/4),
-  ramp(A5, Eb5, sec/4, fadeInOut),
+  repeat(Eb5, sec / 4),
+  ramp(Eb5, A5, sec / 4, fadeInOut),
+  repeat(A5, sec / 4),
+  ramp(A5, Eb5, sec / 4, fadeInOut),
 ));
 
 const wave = sine(sirenFrequency, stream);
@@ -25,5 +33,3 @@ const wave = sine(sirenFrequency, stream);
 const source = chunker(wave, stream);
 
 await stream.from(source);
-
-terminate();

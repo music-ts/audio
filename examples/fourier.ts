@@ -1,4 +1,4 @@
-import { fft, fftFrequencies, chunker, limit, mix, sine } from "../mod.ts";
+import { chunker, fft, fftFrequencies, limit, mix, sine } from "../mod.ts";
 
 // Declare fft size. Must be a power of 2.
 // Tip: The bigger the size, the higher the resolution of the frequency spectrum.
@@ -13,7 +13,7 @@ const OPTIONS = {
 // Mix two frequencies
 const wave = mix(
   sine(440, OPTIONS),
-  sine(660, OPTIONS)
+  sine(660, OPTIONS),
 );
 
 // Create one chunk
@@ -27,15 +27,10 @@ for (const chunk of source) {
   const frequencies = fftFrequencies(OPTIONS.sampleRate, FFT_SIZE);
 
   for (let i = 0; i < magnitudes.length; i++) {
-    console.log(`${
-      ("#" + (i + 1).toString()).padStart(8)
-    } - ${
-      frequencies[i].toFixed(2).padStart(8)
-    } Hz: ${
-      magnitudes[i].toString().padStart(4)
-    }`);
+    console.log(
+      `${("#" + (i + 1).toString()).padStart(8)} - ${
+        frequencies[i].toFixed(2).padStart(8)
+      } Hz: ${magnitudes[i].toString().padStart(4)}`,
+    );
   }
 }
-
-
-

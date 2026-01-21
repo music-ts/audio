@@ -6,7 +6,10 @@ export function createStreamParams({
   sampleFormat,
   channels,
   suggestedLatency,
-}: Pick<StreamOptions, "device" | "sampleFormat" | "channels" | "suggestedLatency">): Deno.PointerValue {
+}: Pick<
+  StreamOptions,
+  "device" | "sampleFormat" | "channels" | "suggestedLatency"
+>): Deno.PointerValue {
   const buff = new ArrayBuffer(32);
   const view = new DataView(buff);
   view.setInt32(0, device.id, true);

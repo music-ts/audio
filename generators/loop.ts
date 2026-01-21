@@ -3,7 +3,7 @@
  * If `times` is specified, it will yield the values that many times.
  * Otherwise, it will yield the values indefinitely.
  */
-export function * loop<T>(
+export function* loop<T>(
   generator: Iterable<T, void, unknown>,
   times = Infinity,
 ): Generator<T, void, unknown> {
@@ -35,7 +35,7 @@ export function * loop<T>(
  */
 export async function* loopAsync<T>(
   generator: AsyncIterable<T, void, unknown>,
-  times = Infinity
+  times = Infinity,
 ): AsyncGenerator<T, void, unknown> {
   const iterator = generator[Symbol.asyncIterator]();
   let i = 0;

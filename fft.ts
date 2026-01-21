@@ -8,16 +8,16 @@ import { isPowerOf2 } from "./utils.ts";
 /**
  * Computes the frequency magnitudes from an audio waveform using FFT.
  * Uses Cooley-Tukey FFT algorithm.
- * 
+ *
  * @param input - An Float32Array of real-valued audio samples which must have a length that is a power of 2
  * @returns Array of frequency magnitudes
  */
 export function fft(
-  input: Float32Array
+  input: Float32Array,
 ): Uint8Array {
   const n = input.length;
   if (!isPowerOf2(n)) {
-    throw new Error('Input array length must be a power of 2');
+    throw new Error("Input array length must be a power of 2");
   }
 
   const real = input.slice(0, n);
@@ -49,8 +49,10 @@ export function fft(
       for (let j = 0; j < len / 2; j++) {
         const uReal = real[i + j];
         const uImag = imag[i + j];
-        const vReal = real[i + j + len / 2] * wReal - imag[i + j + len / 2] * wImag;
-        const vImag = real[i + j + len / 2] * wImag + imag[i + j + len / 2] * wReal;
+        const vReal = real[i + j + len / 2] * wReal -
+          imag[i + j + len / 2] * wImag;
+        const vImag = real[i + j + len / 2] * wImag +
+          imag[i + j + len / 2] * wReal;
         real[i + j] = uReal + vReal;
         imag[i + j] = uImag + vImag;
         real[i + j + len / 2] = uReal - vReal;
@@ -81,7 +83,7 @@ export function fft(
  */
 export function fftFrequencies(
   fftSize: number,
-  sampleRate: number
+  sampleRate: number,
 ): number[] {
   const freqs = new Array(fftSize / 2);
   for (let k = 0; k < fftSize / 2; k++) {
@@ -89,4 +91,3 @@ export function fftFrequencies(
   }
   return freqs;
 }
-

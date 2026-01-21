@@ -1,4 +1,4 @@
-import { chunker, initialize, play, sine, terminate } from "../mod.ts";
+import { chunker, initAudioApi, sine } from "../mod.ts";
 
 const OPTIONS = {
   channels: 1,
@@ -11,10 +11,8 @@ const wave = sine(440, OPTIONS);
 
 const source = chunker(wave, OPTIONS);
 
-initialize();
+using audio = await initAudioApi();
 
-const stream = play(OPTIONS).stopAfter({ seconds: 2 });
+const stream = audio.play(OPTIONS).stopAfter({ seconds: 2 });
 
 await stream.from(source);
-
-terminate();

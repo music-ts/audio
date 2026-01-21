@@ -18,7 +18,7 @@ export function* chunker<TFormat extends AudioSampleFormat>(
     "sampleFormat" | "framesPerBuffer"
   >,
 ): Generator<AudioBuffer<TFormat>, void, unknown> {
-  const iterator = floatGenerator[Symbol.iterator]()
+  const iterator = floatGenerator[Symbol.iterator]();
   const formatter = AUDIO_SAMPLE_FORMATS[sampleFormat];
   while (true) {
     const buffer = new formatter.Array(framesPerBuffer);
@@ -48,8 +48,8 @@ export async function* chunkerAsync<TFormat extends AudioSampleFormat>(
   >,
 ): AsyncGenerator<AudioBuffer<TFormat>, void, unknown> {
   const iterator = (
-    (floatGenerator as AsyncIterable<number>)[Symbol.asyncIterator]
-    || (floatGenerator as Iterable<number>)[Symbol.iterator]
+    (floatGenerator as AsyncIterable<number>)[Symbol.asyncIterator] ||
+    (floatGenerator as Iterable<number>)[Symbol.iterator]
   )();
   const formatter = AUDIO_SAMPLE_FORMATS[sampleFormat];
   while (true) {

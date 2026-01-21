@@ -9,7 +9,7 @@ export function libSuffix(): string {
     case "linux":
       return ".so";
     default:
-      throw new AudioError("Unsupported platform");
+      throw new AudioError("Unsupported OS: " + Deno.build.os);
   }
 }
 

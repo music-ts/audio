@@ -1,6 +1,16 @@
-import { chunker, initialize, limit, play, queue, loop, sine, terminate, ramp, volume, repeat, mix } from "../mod.ts";
-
-initialize();
+import {
+  AudioApi,
+  chunker,
+  initAudioApi,
+  limit,
+  loop,
+  mix,
+  queue,
+  ramp,
+  repeat,
+  sine,
+  volume,
+} from "../mod.ts";
 
 const BPM = 160; // beats per minute
 
@@ -22,7 +32,7 @@ const OPTIONS = {
 const beat = 60 / BPM * OPTIONS.sampleRate;
 
 function tone(
-  frequency: number, 
+  frequency: number,
   beats: number,
 ) {
   const samples = beat * beats;
@@ -42,31 +52,43 @@ function tone(
 function voice(no: number) {
   return queue(
     repeat(0, no * beat * 8),
-    loop(queue(
-      tone(C4, 1),
-      tone(D4, 1),
-      tone(E4, 1),
-      tone(C4, 1),
-    ), 2),
-    loop(queue(
-      tone(E4, 1),
-      tone(F4, 1),
-      tone(G4, 2),
-    ), 2),
-    loop(queue(
-      tone(G4, .5),
-      tone(A4, .5),
-      tone(G4, .5),
-      tone(F4, .5),
-      tone(E4, 1),
-      tone(C4, 1),
-    ), 2),
-    loop(queue(
-      tone(C4, 1),
-      tone(G3, 1),
-      tone(C4, 2),
-    ), 2)
-  )
+    loop(
+      queue(
+        tone(C4, 1),
+        tone(D4, 1),
+        tone(E4, 1),
+        tone(C4, 1),
+      ),
+      2,
+    ),
+    loop(
+      queue(
+        tone(E4, 1),
+        tone(F4, 1),
+        tone(G4, 2),
+      ),
+      2,
+    ),
+    loop(
+      queue(
+        tone(G4, .5),
+        tone(A4, .5),
+        tone(G4, .5),
+        tone(F4, .5),
+        tone(E4, 1),
+        tone(C4, 1),
+      ),
+      2,
+    ),
+    loop(
+      queue(
+        tone(C4, 1),
+        tone(G3, 1),
+        tone(C4, 2),
+      ),
+      2,
+    ),
+  );
 }
 
 const mixer = mix(
@@ -77,6 +99,6 @@ const mixer = mix(
 
 const source = chunker(mixer, OPTIONS);
 
-await play(OPTIONS).from(source);
+using audio = await initAudioApi();
 
-terminate();
+await audio.play(OPTIONS).from(source);

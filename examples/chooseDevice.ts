@@ -1,4 +1,4 @@
-import { audioTask, chunker, getHostApis, sine } from "../mod.ts";
+import { type AudioApi, chunker, initAudioApi, sine } from "../mod.ts";
 
 function choose<T>(name: string, options: T[], keys: (keyof T)[]): T {
   console.clear();
@@ -18,10 +18,10 @@ function choose<T>(name: string, options: T[], keys: (keyof T)[]): T {
   return options[chosen];
 }
 
-function chooseDevice() {
+function chooseDevice(audio: AudioApi) {
   console.clear();
 
-  const hostApis = Array.from(getHostApis());
+  const hostApis = Array.from(audio.getHostApis());
   const hostApi = choose("host API", hostApis, ["name"]);
 
   console.clear();
@@ -38,20 +38,11 @@ function chooseDevice() {
   ]);
 }
 
-const chooseDeviceAndPlay = audioTask(
-  async (frequency: number, seconds: number) => {
-    const device = chooseDevice();
-    const stream = device.play();
-    const source = chunker(
-      sine(frequency, stream),
-      stream,
-    );
-    await stream.stopAfter({ seconds }).from(source);
-  },
+using audio = await initAudioApi();
+const device = chooseDevice(audio);
+const stream = device.play();
+const source = chunker(
+  sine(440, stream),
+  stream,
 );
-
-const [error] = await chooseDeviceAndPlay(440, 2);
-
-if (error) {
-  console.log(error.message);
-}
+await stream.stopAfter({ seconds: 2 }).from(source);

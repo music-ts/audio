@@ -9,7 +9,7 @@ export const AUDIO_SAMPLE_FORMATS = {
     viewGetMethod: "getFloat32",
     minValue: -1,
     maxValue: 1,
-    isFloating: true
+    isFloating: true,
   },
   int32: {
     paTag: 0x00000002,
@@ -18,7 +18,7 @@ export const AUDIO_SAMPLE_FORMATS = {
     viewGetMethod: "getInt32",
     minValue: -0x80000000,
     maxValue: 0x7FFFFFFF,
-    isFloating: false
+    isFloating: false,
   },
   int16: {
     paTag: 0x00000008,
@@ -27,7 +27,7 @@ export const AUDIO_SAMPLE_FORMATS = {
     viewGetMethod: "getInt16",
     minValue: -0x8000,
     maxValue: 0x7FFF,
-    isFloating: false
+    isFloating: false,
   },
   int8: {
     paTag: 0x00000010,
@@ -35,8 +35,8 @@ export const AUDIO_SAMPLE_FORMATS = {
     viewSetMethod: "setInt8",
     viewGetMethod: "getInt8",
     minValue: -0x80,
-    maxValue: 0x7F, 
-    isFloating: false
+    maxValue: 0x7F,
+    isFloating: false,
   },
   uint8: {
     paTag: 0x00000020,
@@ -58,14 +58,17 @@ export type AudioSampleFormat = keyof typeof AUDIO_SAMPLE_FORMATS;
 /**
  * Typed array of audio samples.
  */
-export type AudioBuffer<T extends AudioSampleFormat = AudioSampleFormat> = InstanceType<
-  (typeof AUDIO_SAMPLE_FORMATS)[T]['Array']
->;
+export type AudioBuffer<T extends AudioSampleFormat = AudioSampleFormat> =
+  InstanceType<
+    (typeof AUDIO_SAMPLE_FORMATS)[T]["Array"]
+  >;
 
 /**
  * Common audio options.
  */
-export type AudioOptions<TFormat extends AudioSampleFormat = AudioSampleFormat> = {
+export type AudioOptions<
+  TFormat extends AudioSampleFormat = AudioSampleFormat,
+> = {
   channels: number;
   sampleFormat: TFormat;
   sampleRate: number;
