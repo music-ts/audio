@@ -10,7 +10,7 @@
     "./fourier": "./fft.ts"
   },
   "publish": {
-    "ignore": [
+    "exclude": [
       "bin",
       "examples",
       ".vscode",
